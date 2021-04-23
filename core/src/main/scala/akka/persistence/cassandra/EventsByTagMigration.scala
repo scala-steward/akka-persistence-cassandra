@@ -207,7 +207,8 @@ class EventsByTagMigration(
                   settings.querySettings.readProfile,
                   s"migrateToTag-$pid",
                   extractor =
-                    EventsByTagMigration.rawPayloadOldTagSchemaExtractor(eventsByTagSettings.bucketSize, system))
+                    EventsByTagMigration.rawPayloadOldTagSchemaExtractor(eventsByTagSettings.bucketSize, system),
+                  ec)
                 .map(tagRecovery.sendMissingTagWriteRaw(tp, actorRunning = false))
                 .grouped(periodicFlush)
                 .mapAsync(1)(_ => tagRecovery.flush(timeout))
